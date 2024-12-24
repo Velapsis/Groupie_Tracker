@@ -8,6 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => { 
             window.location.href = button.getAttribute("href"); 
-        }, 500);
+        }, 1000);
     }); 
 }); 
