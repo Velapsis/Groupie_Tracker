@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	groupie "main/logic"
 )
 
 func main() {
