@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static\style\style.css">
-    <title>Groupie Tracker</title>
+    <title>Kaizen - Groupie Tracker</title>
+    <link rel="stylesheet" href="/static/css/Menu.css">
 </head>
-
 <body>
-    <span>Groupie Tracker</span><br>
 
-    <ol class="articles">
-        {{ range . }}      
-        <li class="articles__article" style="--animation-order:1">
-     
-            <a href=/artist/{{.Name}} class="articles__link" >
-                <div class="articles__content">
-                    <img class="articles__img" src={{.Image}} alt="band">
-                    <div class="title">{{.Name}}</div>
-                </div>
-            </a>
-        </li>
-        {{end}}
-    </ol>
+
+<div id="page-directors">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+</div>
+
+
+<div id="gif-container">
+    <img src="fuji.gif" alt="Mount Fuji GIF" loading="lazy">
+    <div id="overlay-text">
+        <h1>Kaizen</h1>
+        <h2>Groupie Tracker</h2>
+    </div>
+</div>
+
+
+
+
+<div id="main-page-button-container">
+    <a href="Main.html" id="main-page-button">Explore More</a>
+</div>
+
+
+<div id="music-quote-container">
+    <div id="music-quote">
+        <p>"When words leave off, music begins."</p>
+    </div>    
+</div>
+
+<div id="page-transition-overlay"></div>
+
+
+<script src="Menu.js"></script>
 </body>
-
 </html>
