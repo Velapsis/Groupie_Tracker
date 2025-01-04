@@ -1,7 +1,10 @@
 package main
 
 import (
-	groupie "main/logic"
+	groupie "Groupie_Tracker/logic"
+	"encoding/json"
+	"log"
+	"net/http"
 )
 
 func main() {
@@ -12,6 +15,16 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate")
 		http.ServeFile(w, r, "static/html/Menu.html")
+	})
+
+	http.HandleFunc("/api/artists", func(w http.ResponseWriter, r *http.Request) {
+		artists, err := groupie.GetArtists()
+		if err != nil {
+			http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(artists)
 	})
 
 	log.Println("Server started on http://localhost:8080")
