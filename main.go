@@ -1,9 +1,9 @@
 package main
 
 import (
-	groupie "main/logic"
+	server "main/web"
 )
 
 func main() {
-	groupie.CreateWebsite()
+	server.CreateWebsite()
 }

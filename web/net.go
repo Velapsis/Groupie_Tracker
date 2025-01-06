@@ -1,7 +1,8 @@
-package groupie
+package server
 
 import (
 	"fmt"
+	groupie "main/logic"
 	"net/http"
 	"os/exec"
 	"runtime"
@@ -9,8 +10,8 @@ import (
 )
 
 func CreateWebsite() {
-	http.Handle("/templates", http.StripPrefix("/templates", http.FileServer(http.Dir("./templates/"))))
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./css/"))))
+	http.Handle("/web/templates", http.StripPrefix("/web/templates", http.FileServer(http.Dir("./web/templates"))))
+	http.Handle("/web/static", http.StripPrefix("/web/static", http.FileServer(http.Dir("./web/static"))))
 
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
@@ -41,17 +42,17 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
 		if r.URL.Path != "/" {
-			t, _ := template.ParseFiles("/static/templates/error.html")
+			t, _ := template.ParseFiles("/web/templates/error.html")
 			t.Execute(w, http.StatusNotFound)
 			return
 		}
 
-		t, err := template.ParseFiles("/static/templates/Menu.html")
+		t, err := template.ParseFiles("/web/templates/menu.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
-		artist, err := GetArtists()
+		artist, err := groupie.GetArtists()
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -66,12 +67,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
-		t, err := template.ParseFiles("/static/templates/Menu.html")
+		t, err := template.ParseFiles("/web/templates/menu.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
-		artist, err := GetArtists()
+		artist, err := groupie.GetArtists()
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -86,7 +87,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		t, _ = template.ParseFiles("/static/templates/error.html")
+		t, _ = template.ParseFiles("/web/templates/error.html")
 		t.Execute(w, http.StatusNotFound)
 		return
 	} else {
