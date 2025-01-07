@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
+        <title>Groupie Tracker</title>
+    </head>
+<body>
+    <div id="page-directors">
+    <a href="templates/menu.html">Back to Menu</a>
+</div>
+
+<div id="main-content">
+    <H1>Welcome to the Main Page!</H1>
+    <p>This is where you will explore artists and their groups. Content coming soon!</p>
+</div>
+
+    
+
+    <ol class="articles">
+        {{ range . }}      
+        <li class="articles__article" style="--animation-order:1">
+     
+            <a href=/artist/{{.Name}} class="articles__link" >
+                <div class="articles__content">
+                    <img class="articles__img" src={{.Image}} alt="band">
+                    <div class="title">{{.Name}}</div>
+                </div>
+            </a>
+        </li>
+        {{end}}
+    </ol>
+
+</body>
+</html>

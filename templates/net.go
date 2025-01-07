@@ -10,10 +10,11 @@ import (
 )
 
 func CreateWebsite() {
-	http.Handle("/web/templates", http.StripPrefix("/web/templates", http.FileServer(http.Dir("web/templates"))))
-	http.Handle("/static/css", http.StripPrefix("/static/css", http.FileServer(http.Dir("/static/css"))))
+	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("./templates/"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	http.HandleFunc("/", IndexHandler)
+	http.HandleFunc("/", MainMenu)
+	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -37,17 +38,31 @@ func OpenBrowser(url string) error {
 	return exec.Command(cmd, args...).Start()
 
 }
+func MainMenu(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		t, _ := template.ParseFiles("templates/error.html")
+		t.Execute(w, http.StatusNotFound)
+		return
+	}
+
+	t, err := template.ParseFiles("templates/menu.html")
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, r)
+}
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
 		if r.URL.Path != "/" {
-			t, _ := template.ParseFiles("web/templates/error.html")
+			t, _ := template.ParseFiles("templates/error.html")
 			t.Execute(w, http.StatusNotFound)
 			return
 		}
 
-		t, err := template.ParseFiles("web/templates/menu.html")
+		t, err := template.ParseFiles("templates/mainpage.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -67,7 +82,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
-		t, err := template.ParseFiles("web/templates/menu.html")
+		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -87,7 +102,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		t, _ = template.ParseFiles("web/templates/error.html")
+		t, _ = template.ParseFiles("templates/error.html")
 		t.Execute(w, http.StatusNotFound)
 		return
 	} else {

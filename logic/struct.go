@@ -21,3 +21,7 @@ type Concert struct {
 	ConcertDate     []string `json:"dates"`
 	ConcertLocation []string `json:"locations"`
 }
+var MenuPage string
+var MainPage string
+var ArtistPage string 
+var ErrorPage string 
