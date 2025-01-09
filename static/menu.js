@@ -3,11 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("page-transition-overlay"); 
 
     button.addEventListener("click", (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
+        console.log("Button clicked!")
         overlay.classList.add("active"); 
 
+       
         setTimeout(() => { 
             window.location.href = button.getAttribute("href"); 
-        }, 1000);
-    }); 
+        }, 1500);
+    });
 }); 
