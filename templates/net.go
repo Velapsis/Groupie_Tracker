@@ -14,7 +14,7 @@ func CreateWebsite() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
 	http.HandleFunc("/", MainMenu)
-	http.HandleFunc("/index", LoadArtist)
+	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -38,6 +38,7 @@ func OpenBrowser(url string) error {
 	return exec.Command(cmd, args...).Start()
 
 }
+
 func MainMenu(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		t, _ := template.ParseFiles("templates/error.html")
@@ -56,7 +57,7 @@ func MainMenu(w http.ResponseWriter, r *http.Request) {
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
-		if r.URL.Path != "/" {
+		if r.URL.Path != "/index" {
 			t, _ := template.ParseFiles("templates/error.html")
 			t.Execute(w, http.StatusNotFound)
 			return
@@ -112,6 +113,8 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadArtist(w http.ResponseWriter, r *http.Request) {
+	groupie.GetArtists()
 	IndexHandler(w, r)
-	//http.Redirect(w, r, "/", http.StatusSeeOther)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
