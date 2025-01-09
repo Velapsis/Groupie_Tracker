@@ -14,7 +14,7 @@ func CreateWebsite() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
 	http.HandleFunc("/", MainMenu)
-	http.HandleFunc("/index", IndexHandler)
+	http.HandleFunc("/index", LoadArtist)
 	http.HandleFunc("/artist/", ArtistHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -112,6 +112,6 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoadArtist(w http.ResponseWriter, r *http.Request) {
-	groupie.GetArtists()
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	IndexHandler(w, r)
+	//http.Redirect(w, r, "/", http.StatusSeeOther)
 }
