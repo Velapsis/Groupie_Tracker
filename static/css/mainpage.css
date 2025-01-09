@@ -58,27 +58,41 @@ p {
 }
 
 
-/* Navigation Bar Styling */
-#navigation {
+#page-directors {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
 }
 
-#navigation a {
+#page-directors a {
     text-decoration: none;
     color: #ffb7c5;
-    font-size: 1.2rem;
-    font-family: Arial, sans-serif;
-    padding: 10px 20px;
-    border: 2px solid #ffb7c5;
-    border-radius: 20px;
+    font-size: 1rem;
+    padding: 10px 15px;
+    position: relative;
+    overflow: hidden;
     transition: all 0.3s ease;
 }
 
-#navigation a:hover {
+#page-directors a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
     background-color: #ffb7c5;
-    color: black;
-    transform: scale(1.1);
+    transition: width 0.3s ease-out;
+}
+
+#page-directors a:hover::after {
+    width: 100%;
+}
+
+#page-directors a:hover {
+    color: #ffb7c5;
+    background-color: transparent;
 }
