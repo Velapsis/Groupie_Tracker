@@ -110,3 +110,8 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func LoadArtist(w http.ResponseWriter, r *http.Request) {
+	groupie.GetArtists()
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}

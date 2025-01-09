@@ -1,8 +1,8 @@
 package groupie
 
 func Init() {
-	GetArtists()
-	getRelations()
+	InitPages()
+	
 
 }
 
@@ -14,5 +14,7 @@ func InitPages() {
 }
 
 func InitWeb() {
+	GetArtists()
+	getRelations()
 
 }
