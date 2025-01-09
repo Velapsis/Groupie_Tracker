@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	groupie "main/logic"
 	"net/http"
 	"os/exec"
 	"runtime"
