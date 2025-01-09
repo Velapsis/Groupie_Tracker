@@ -1,3 +1,3 @@
-module Groupie_Tracker
+module main
 
 go 1.22.2
