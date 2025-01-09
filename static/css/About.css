@@ -6,7 +6,6 @@ body {
     color: white;
     overflow-x: hidden;
     height: 100vh;
-    position: relative;
 }
 
 
@@ -16,7 +15,6 @@ body {
     left: 10px;
 }
 
-
 #page-directors a {
     text-decoration: none;
     color: #ffb7c5;
@@ -24,9 +22,8 @@ body {
     padding: 10px 15px;
     position: relative;
     overflow: hidden;
-    transition: all ease 0.3s;
+    transition: all 0.3s ease;
 }
-
 
 #page-directors a::after {
     content: "";
@@ -36,17 +33,15 @@ body {
     width: 0;
     height: 2px;
     background-color: #ffb7c5;
-    transition: width ease 0.3s-out;
+    transition: width 0.3s ease-out;
 }
-
 
 #page-directors a:hover::after {
     width: 100%;
 }
 
-
 #page-directors a:hover {
-    color: #ffb7c5;
+    color: white;
 }
 
 
@@ -56,7 +51,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-
 h1 {
     color: #ffb7c5;
     font-size: 3rem;
@@ -64,13 +58,18 @@ h1 {
     text-shadow: 0 0 10px rgba(255, 183, 197, 0.8);
 }
 
+
 #about-text-container {
     text-align: left;
     margin: 0 auto;
     padding: 20px;
-    width: 60px;
+    width: 60%;
     background-color: rgba(255, 183, 197, 0.1);
     color: #ffb7c5;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 183, 197, 0.5);
+    font-size: 1.2rem;
+    line-height: 1.8;
 }
 
 
@@ -80,13 +79,11 @@ h1 {
     transition: color 0.3s ease;
 }
 
-
 #about-text-container a:hover {
     color: white;
 }
 
-
-#made-by{
+#made-by {
     position: fixed;
     bottom: 10px;
     right: 10px;
