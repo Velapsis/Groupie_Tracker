@@ -1,7 +1,8 @@
-package groupie
+package server
 
 import (
 	"fmt"
+	groupie "main/logic"
 	"net/http"
 	"os/exec"
 	"runtime"
@@ -10,9 +11,10 @@ import (
 
 func CreateWebsite() {
 	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("./templates/"))))
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./css/"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
-	http.HandleFunc("/", IndexHandler)
+	http.HandleFunc("/", MainMenu)
+	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -37,21 +39,36 @@ func OpenBrowser(url string) error {
 
 }
 
+func MainMenu(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		t, _ := template.ParseFiles("templates/error.html")
+		t.Execute(w, http.StatusNotFound)
+		return
+	}
+
+	t, err := template.ParseFiles("templates/menu.html")
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, r)
+}
+
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
-		if r.URL.Path != "/" {
+		if r.URL.Path != "/index" {
 			t, _ := template.ParseFiles("templates/error.html")
 			t.Execute(w, http.StatusNotFound)
 			return
 		}
 
-		t, err := template.ParseFiles("templates/index.html")
+		t, err := template.ParseFiles("templates/mainpage.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
-		artist, err := GetArtists()
+		artist, err := groupie.GetArtists()
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -66,12 +83,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
-		t, err := template.ParseFiles("templates/profile.html")
+		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
-		artist, err := GetArtists()
+		artist, err := groupie.GetArtists()
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
@@ -93,4 +110,11 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "400: bad request.", http.StatusBadRequest)
 	}
 
+}
+
+func LoadArtist(w http.ResponseWriter, r *http.Request) {
+	groupie.GetArtists()
+	IndexHandler(w, r)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
