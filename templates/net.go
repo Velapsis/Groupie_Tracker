@@ -118,3 +118,37 @@ func LoadArtist(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+
+func SearchHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		r.ParseForm()
+
+		query := r.FormValue("query")
+		filters := map[string]string{
+			"creation_date":	r.FormValue("creation_date"),
+			"first_album_date":	r.FormValue("first_album_date"),
+			"location":			r.FormValue("location"),
+		}
+
+		artists, err := groupie.GetArtists()
+		if err != nil {
+			http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
+			return
+		}
+
+		results := groupie.SearchArtistsWithFilters(artists, query, filters)
+
+
+		t, err := template.ParseFiles("templates/search_results.html")
+		if err != nil {
+			http.Error(w, "500: internal server error", http.StatusInternalServerError)
+			return
+		}
+
+
+		t.Execute(w,results)
+	} else {
+		http.Error(w, "400: bad request", http.StatusBadRequest)
+	}
+}

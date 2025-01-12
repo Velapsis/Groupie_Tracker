@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/static/search_results.css"
+</head>
+<body>
+    <h1>Search Results</h1>
+    <u1>
+        {{range}}
+    <li>
+        <strong>{{.type}}:</strong> {{.name}} <br>
+        Creation Date: {{.creation_date}} <br>
+        First Album: {{.first_album}}
+    </li>
+    {{end}}
+    </u1>
+    <a href="/index" id="back-link">Back to Main Page</a>
+</body>
+</html>
