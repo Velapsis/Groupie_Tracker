@@ -16,6 +16,7 @@ func CreateWebsite() {
 	http.HandleFunc("/", MainMenu)
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
+	//http.HandleFunc("/search", SearchHandler)
 
 	OpenBrowser("http://localhost:8080")
 	fmt.Println("Server listening on port http://localhost:8080")
@@ -40,6 +41,7 @@ func OpenBrowser(url string) error {
 }
 
 func MainMenu(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path != "/" {
 		t, _ := template.ParseFiles("templates/error.html")
 		t.Execute(w, http.StatusNotFound)
@@ -55,29 +57,28 @@ func MainMenu(w http.ResponseWriter, r *http.Request) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
 
-		if r.URL.Path != "/index" {
-			t, _ := template.ParseFiles("templates/error.html")
-			t.Execute(w, http.StatusNotFound)
-			return
-		}
-
-		t, err := template.ParseFiles("templates/mainpage.html")
-		if err != nil {
-			http.Error(w, "500: internal server error", http.StatusInternalServerError)
-			return
-		}
-		artist, err := groupie.GetArtists()
-		if err != nil {
-			http.Error(w, "500: internal server error", http.StatusInternalServerError)
-			return
-		}
-		t.Execute(w, artist)
-	} else {
-		http.Error(w, "400: Bad Request", http.StatusBadRequest)
+	if r.URL.Path != "/index" {
+		t, _ := template.ParseFiles("templates/error.html")
+		t.Execute(w, http.StatusNotFound)
 		return
 	}
+
+	t, err := template.ParseFiles("templates/mainpage.html")
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	artists, err := groupie.GetArtists()
+	if r.FormValue("search") != "" && r.Method == "POST" {
+		artists = SearchHandler(w, r)
+	}
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, artists)
+	
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
@@ -119,36 +120,31 @@ func LoadArtist(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+//mahan
+func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 
-func SearchHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		r.ParseForm()
-
-		query := r.FormValue("query")
-		filters := map[string]string{
-			"creation_date":	r.FormValue("creation_date"),
-			"first_album_date":	r.FormValue("first_album_date"),
-			"location":			r.FormValue("location"),
-		}
-
-		artists, err := groupie.GetArtists()
-		if err != nil {
-			http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
-			return
-		}
-
-		results := groupie.SearchArtistsWithFilters(artists, query, filters)
-
-
-		t, err := template.ParseFiles("templates/search_results.html")
-		if err != nil {
-			http.Error(w, "500: internal server error", http.StatusInternalServerError)
-			return
-		}
-
-
-		t.Execute(w,results)
-	} else {
-		http.Error(w, "400: bad request", http.StatusBadRequest)
+	query := r.FormValue("query")
+	filters := map[string]string{
+		"creation_date":    r.FormValue("creation_date"),
+		"first_album_date": r.FormValue("first_album_date"),
+		"location":         r.FormValue("location"),
 	}
+
+	fmt.Println("Search Query:", query)
+	fmt.Println("Filters:", filters)
+
+	artists, err := groupie.GetArtists()
+	if err != nil {
+		http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
+		return nil
+	}
+
+	results := groupie.SearchArtistsWithFilters(artists, query, filters)
+
+	if len(results) == 0 {
+		fmt.Println("No results found.") 
+	}
+
+	return results
+    
 }

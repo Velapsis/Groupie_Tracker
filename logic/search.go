@@ -5,13 +5,16 @@ import (
     "strings"
 )
 
-func SearchArtistsWithFilters(artists []Artist, query string, filters map[string]string) []map[string]string {
+func SearchArtistsWithFilters(artists []Artist, query string, filters map[string]string) []Artist {
     query = strings.ToLower(query)
     var results []map[string]string
+
+    var artiststruct []Artist = []Artist{} 
 
     for _, artist := range artists {
         match := false
 
+        
         if query != "" {
             if strings.Contains(strings.ToLower(artist.Name), query) {
                 match = true
@@ -34,17 +37,18 @@ func SearchArtistsWithFilters(artists []Artist, query string, filters map[string
             }
         }
 
-        if creationDate, ok := filters["creation_date"]; ok {
+        
+        if creationDate, ok := filters["creation_date"]; ok && creationDate != "" {
             if strconv.Itoa(artist.CreationDate) != creationDate {
                 continue
             }
         }
-        if firstAlbumDate, ok := filters["first_album_date"]; ok {
+        if firstAlbumDate, ok := filters["first_album_date"]; ok && firstAlbumDate != "" {
             if !strings.Contains(artist.FirstAlbum, firstAlbumDate) {
                 continue
             }
         }
-        if location, ok := filters["location"]; ok {
+        if location, ok := filters["location"]; ok && location != "" {
             found := false
             for loc := range artist.Relations {
                 if strings.Contains(strings.ToLower(loc), strings.ToLower(location)) {
@@ -57,6 +61,7 @@ func SearchArtistsWithFilters(artists []Artist, query string, filters map[string
             }
         }
 
+        
         if match {
             results = append(results, map[string]string{
                 "type":          "Artist",
@@ -64,7 +69,17 @@ func SearchArtistsWithFilters(artists []Artist, query string, filters map[string
                 "creation_date": strconv.Itoa(artist.CreationDate),
                 "first_album":   artist.FirstAlbum,
             })
+
+            artiststruct = append(artiststruct, Artist{
+                Name: artist.Name,
+                CreationDate: artist.CreationDate,
+                FirstAlbum: artist.FirstAlbum,
+                Image: artist.Image,
+            })
+
+
+            
         }
     }
-    return results
+    return artiststruct 
 }
