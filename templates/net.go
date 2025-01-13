@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"runtime"
 	"text/template"
+	"strconv"
 )
 
 func CreateWebsite() {
@@ -15,7 +16,7 @@ func CreateWebsite() {
 
 	http.HandleFunc("/", MainMenu)
 	http.HandleFunc("/index", IndexHandler)
-	http.HandleFunc("/artist/", ArtistHandler)
+	http.HandleFunc("/artist", ArtistHandler)
 	//http.HandleFunc("/search", SearchHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -84,29 +85,40 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 
+		fmt.Println("url : ", r.URL.Path)
+
+		fmt.Println("id : ", r.FormValue("id"))
+
+
+
 		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
+
 		artist, err := groupie.GetArtists()
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		urlString := string(r.URL.Path)[8:]
+		id, _ := strconv.Atoi(r.FormValue("id"))
 
-		for i, v := range artist {
-			if v.Name == urlString {
-				t.Execute(w, artist[i])
-				return
-			}
-		}
+		t.Execute(w, artist[id-1])
 
-		t, _ = template.ParseFiles("templates/error.html")
-		t.Execute(w, http.StatusNotFound)
-		return
+		// urlString := string(r.URL.Path)[8:]
+
+		// for i, v := range artist {
+		// 	if v.Name == urlString {
+		// 		t.Execute(w, artist[i])
+		// 		return
+		// 	}
+		// }
+
+		// t, _ = template.ParseFiles("templates/error.html")
+		// t.Execute(w, nil)
+		// return
 	} else {
 		http.Error(w, "400: bad request.", http.StatusBadRequest)
 	}

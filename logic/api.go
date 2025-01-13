@@ -9,22 +9,12 @@ import (
 )
 
 func GetArtists() ([]Artist, error) {
+	
 	var artists []Artist
 	body, err := createBody("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
 		fmt.Println("GetArtist error")
 		return []Artist{}, err
-	}
-
-	var temp []struct {
-		Id           int      `json:"id"`
-		Image        string   `json:"image"`
-		Name         string   `json:"name"`
-		Name2 		 string   `json:"name"`
-		Members      []string `json:"members"`
-		CreationDate int      `json:"creationDate"`
-		FirstAlbum   string   `json:"firstAlbum"`
-		Relations    string   `json:"relations"`
 	}
 
 	err = json.Unmarshal(body, &temp)
@@ -49,9 +39,9 @@ func GetArtists() ([]Artist, error) {
 		}
 
 		value := Artist{
-			temp[v].Id,
+			v+1,
 			temp[v].Image,
-			temp[v].Name,
+			temp[v].Name,			
 			temp[v].Members,
 			temp[v].CreationDate,
 			strings.ReplaceAll(temp[v].FirstAlbum, "-", "."),
@@ -60,7 +50,7 @@ func GetArtists() ([]Artist, error) {
 
 		artists = append(artists, value)
 	}
-
+ 
 	return artists, err
 }
 func getRelations() ([]Relation, error) {
