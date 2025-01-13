@@ -280,7 +280,67 @@ body {
     display: inline-block;
   }
 
-
-
+  #search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    gap: 10px
+  } 
+  
+  
+  #search-container input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ffb7c5;
+    border-radius: 5px;
+    background-color: rgba(255, 183, 197, 0.1);
+    color: #ffb7c5;
+    outline: none;
+    width: 200px;
+    transition: all 0.3s ease;
+  }
+  
+  
+  #search-cotainer input:focus {
+    border-color: white;
+    background-color: rgba(255, 183, 197, 0.2);
+    color: white;
+  }
+  
+  
+  #search-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: black;
+    background-color: #ffb7c5;
+    border: 2px solid #ffb7c5;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  
+  #search-container button:hover {
+    background-color: white;
+    color: #ffb7c5;
+  }
+  
+  #search-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: black;
+    background-color: #ffb7c5;
+    border: 2px solid #ffb7c5;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  
+  #search-container button:hover {
+    background-color: white;
+    color: #ffb7c5;
+  }
 
   
