@@ -326,7 +326,7 @@ body {
     color: #ffb7c5;
   }
   
-  #search-container button {
+  #reset  {
     padding: 10px 20px;
     font-size: 1rem;
     color: black;
@@ -335,10 +335,11 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
   }
   
   
-  #search-container button:hover {
+  #reset:hover {
     background-color: white;
     color: #ffb7c5;
   }

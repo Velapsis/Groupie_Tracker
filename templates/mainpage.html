@@ -28,13 +28,14 @@
     <div id="search-container">
         <form action="/index" method="POST">
             <input type="text" value="search" name="search" hidden>
-            <input type="text" name="query" placeholder="Search for an artist, member, location" required>
+            <input type="text" name="query" placeholder="Search for an artist, member, location">
             <input type="text" name="creation_date" placeholder="Creation Date (YYYY)">
             <input type="text" name="first_album_date" placeholder="First Album Date (YYYY-MM-DD)">
             <input type="text" name="location" placeholder="Location">
-            <button type="submit">Search</button>             
+            <button type="submit">Search</button> 
+            <a href="/index" id="reset">Reset</a>            
         </form>
-        <a href="/index" id="search-container">Reset</a>
+        
     </div>
     
     

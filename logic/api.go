@@ -20,6 +20,7 @@ func GetArtists() ([]Artist, error) {
 		Id           int      `json:"id"`
 		Image        string   `json:"image"`
 		Name         string   `json:"name"`
+		Name2 		 string   `json:"name"`
 		Members      []string `json:"members"`
 		CreationDate int      `json:"creationDate"`
 		FirstAlbum   string   `json:"firstAlbum"`
