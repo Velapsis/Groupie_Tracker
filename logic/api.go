@@ -9,7 +9,7 @@ import (
 )
 
 func GetArtists() ([]Artist, error) {
-	
+
 	var artists []Artist
 	body, err := createBody("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
@@ -39,9 +39,9 @@ func GetArtists() ([]Artist, error) {
 		}
 
 		value := Artist{
-			v+1,
+			temp[v].Id,
 			temp[v].Image,
-			temp[v].Name,			
+			temp[v].Name,
 			temp[v].Members,
 			temp[v].CreationDate,
 			strings.ReplaceAll(temp[v].FirstAlbum, "-", "."),
@@ -50,7 +50,7 @@ func GetArtists() ([]Artist, error) {
 
 		artists = append(artists, value)
 	}
- 
+
 	return artists, err
 }
 func getRelations() ([]Relation, error) {
