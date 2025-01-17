@@ -132,7 +132,7 @@ func LoadArtist(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-//mahan
+
 func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 
 	query := r.FormValue("query")
