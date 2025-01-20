@@ -44,6 +44,42 @@ body {
   color: white;
 }
 
+#ynov-campus {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+
+#ynov-campus a {
+  text-decoration: none;
+  color: #ffb7c5;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+#ynov-campus a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffb7c5;
+  transition: width 0.3s ease-out;
+}
+
+#ynov-campus a:hover::after {
+  width: 100%;
+}
+
+#ynov-campus a:hover {
+  color: white;
+}
+
+
 #made-by{
   position: fixed;
   bottom: 10px;
@@ -380,12 +416,12 @@ ul {
   font-family: Arial, sans-serif;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-#ynov-campus {
+
+/* #ynov-campus {
   position: absolute;
   top: 20px;
   right: 20px;
-  font-family: 'pacifico', cursive;
+  font-family: 'Oswald', sans-serif;
   font-size: 1rem;
   color: #ffb7c5;
   text-shadow: 2px 2px 5px rgba(255, 183, 197, 0.5);
@@ -398,7 +434,7 @@ ul {
 
 #ynov-campus:hover {
   transform: scale(1.1);
-}
+} */
 
 
 

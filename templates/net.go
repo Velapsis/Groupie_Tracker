@@ -157,38 +157,38 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func LoadArtist(w http.ResponseWriter, r *http.Request) {
-	groupie.GetArtists()
-	IndexHandler(w, r)
+// func LoadArtist(w http.ResponseWriter, r *http.Request) {
+// 	groupie.GetArtists()
+// 	IndexHandler(w, r)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
+// 	http.Redirect(w, r, "/", http.StatusSeeOther)
+// }
 
-func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
+// func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 
-	query := r.FormValue("query")
-	filters := map[string]string{
-		"creation_date":    r.FormValue("creation_date"),
-		"first_album_date": r.FormValue("first_album_date"),
-		"location":         r.FormValue("location"),
-	}
+// 	query := r.FormValue("query")
+// 	filters := map[string]string{
+// 		"creation_date":    r.FormValue("creation_date"),
+// 		"first_album_date": r.FormValue("first_album_date"),
+// 		"location":         r.FormValue("location"),
+// 	}
 
-	fmt.Println("Search Query:", query)
-	fmt.Println("Filters:", filters)
+// 	fmt.Println("Search Query:", query)
+// 	fmt.Println("Filters:", filters)
 
-	artists, err := groupie.GetArtists()
-	if err != nil {
-		http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
-		return nil
-	}
+// 	artists, err := groupie.GetArtists()
+// 	if err != nil {
+// 		http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
+// 		return nil
+// 	}
 
-	results := groupie.SearchArtistsWithFilters(artists, query, filters)
+// 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
 
-	if len(results) == 0 {
-		fmt.Println("No results found.")
-	}
+// 	if len(results) == 0 {
+// 		fmt.Println("No results found.")
+// 	}
 
-	fmt.Print(results)
-	return results
+// 	fmt.Print(results)
+// 	return results
 
-}
+// }

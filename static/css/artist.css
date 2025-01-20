@@ -175,3 +175,37 @@ html {
 }
 
 
+#page-directors {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+#page-directors a {
+  text-decoration: none;
+  color: #ffb7c5;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+#page-directors a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffb7c5;
+  transition: width 0.3s ease-out;
+}
+
+#page-directors a:hover::after {
+  width: 100%;
+}
+
+#page-directors a:hover {
+  color: white;
+}
