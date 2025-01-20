@@ -391,3 +391,27 @@ ul {
   z-index: 9999;
   font-family: Arial, sans-serif;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+#ynov-campus {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-family: 'pacifico', cursive;
+  font-size: 1rem;
+  color: #ffb7c5;
+  text-shadow: 2px 2px 5px rgba(255, 183, 197, 0.5);
+  z-index: 10;
+  cursor: default;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+
+#ynov-campus:hover {
+  transform: scale(1.1);
+}
+
+
+
+
