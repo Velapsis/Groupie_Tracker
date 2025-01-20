@@ -20,8 +20,8 @@ func CreateWebsite() {
 	//http.HandleFunc("/search", SearchHandler)
 
 	//OpenBrowser("http://localhost:8080")
-	fmt.Println("Server listening on port http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("Server listening on port http://localhost:8000")
+	http.ListenAndServe(":8000", nil)
 }
 func OpenBrowser(url string) error {
 	var cmd string
