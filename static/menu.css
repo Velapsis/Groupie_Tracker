@@ -22,7 +22,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(50%);
+    filter: brightness(30%);
 }
 
 
@@ -370,3 +370,7 @@ transform: scale(1);
     z-index: 9999;
     font-family: Arial, sans-serif;
 }
+
+html {
+    scroll-behavior: smooth;
+  }

@@ -12,38 +12,34 @@
 
 <body>
     <div class="test">
-        <div class="back"><a href="/index" class="btn btn-one"> <span>BACK</span> </a></div>
-
+        <div class="back">
+            <a href="/index" class="btn btn-one">
+                <span>BACK</span>
+            </a>
+        </div>
     </div>
 
     <div class="title">
         <h2>{{.Name}}</h2>
     </div>
 
-
-
-
     <div class="wrapper">
         <div class="profile">
             <img class="profile__img" src={{.Image}} alt="band">
         </div>
 
-
         <div class="text">
-
             <h3>Founded:</h3>
             <p>{{.CreationDate}}</p>
-
-            <h3>First Album: </h3>
+            <h3>First Album:</h3>
             <p>{{.FirstAlbum}}</p>
             <h3>Members:</h3>
             <ul>
-                {{ range .Members }}
+                {{range .Members}}
                 <li>{{.}}</li>
                 {{end}}
             </ul>
         </div>
-
 
         <div class="concerts">
             <h3>Concerts:</h3>
@@ -51,25 +47,21 @@
             <table>
                 <tr class="location">
                     <td><a href="#{{$key}}"><u>&#9660 {{$key}}</u></a></td>
-
-                <tr>
+                </tr>
                 <tr class="date" id="{{$key}}">
                     <td>
                         {{range $value}}
                         <ul>
-                            <li>
-                                {{.}}
-                            </li>
+                            <li>{{.}}</li>
                         </ul>
                         {{end}}
                     </td>
                 </tr>
-                {{end}}
-                <table>
+            </table>
+            {{end}}
         </div>
-
     </div>
 
+  
+    <div id="made-by">Made by Kaizen</div>
 </body>
-
-</html>

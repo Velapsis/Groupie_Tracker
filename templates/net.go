@@ -16,6 +16,7 @@ func CreateWebsite() {
 	http.HandleFunc("/", MainMenu)
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist/", ArtistHandler)
+	http.HandleFunc("/about/", AboutPage)
 	//http.HandleFunc("/search", SearchHandler)
 
 	OpenBrowser("http://localhost:8080")
@@ -55,7 +56,21 @@ func MainMenu(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Execute(w, r)
 }
+func AboutPage(w http.ResponseWriter, r *http.Request) {
 
+	if r.URL.Path != "/about/" {
+		t, _ := template.ParseFiles("templates/error.html")
+		t.Execute(w, http.StatusNotFound)
+		return
+	}
+
+	t, err := template.ParseFiles("templates/about.html")
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, r)
+}
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/index" {
@@ -148,3 +163,4 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 	return results
     
 }
+
