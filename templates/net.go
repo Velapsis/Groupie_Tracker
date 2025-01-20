@@ -56,7 +56,21 @@ func MainMenu(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Execute(w, r)
 }
+func AboutPage(w http.ResponseWriter, r *http.Request) {
 
+	if r.URL.Path != "/about/" {
+		t, _ := template.ParseFiles("templates/error.html")
+		t.Execute(w, http.StatusNotFound)
+		return
+	}
+
+	t, err := template.ParseFiles("templates/about.html")
+	if err != nil {
+		http.Error(w, "500: internal server error", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, r)
+}
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/index" {
