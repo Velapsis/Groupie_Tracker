@@ -382,7 +382,7 @@ ul {
 
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 #ynov-campus {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
   font-family: 'pacifico', cursive;
