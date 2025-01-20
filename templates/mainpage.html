@@ -35,7 +35,7 @@
             <input type="text" name="query" placeholder="Search for an artist, member, location">
             <input type="text" name="creation_date" placeholder="Creation Date (YYYY)">
             <input type="text" name="first_album_date" placeholder="First Album Date (YYYY-MM-DD)">
-            <input type="text" name="location" placeholder="Location">
+            <!--<input type="text" name="location" placeholder="Location"> -->
             <button type="submit">Search</button> 
             <a href="/index" id="reset">Reset</a>            
         </form>
@@ -47,12 +47,20 @@
     <ol class="articles">
         {{ range . }}      
         <li class="articles__article" style="--animation-order:1">
-            <a href=/artist/{{.Name}} class="articles__link">
-                <div class="articles__content">
-                    <img class="articles__img" src={{.Image}} alt="band">
-                    <div class="title">{{.Name}}</div>
-                </div>
-            </a>
+            <a href=/artist?id={{.Id}} class="articles__link">
+            <!-- <form action="/artist" method="get" class="articles__link">
+                <input type="text" value={{.Id}} name="id" hidden>
+                <button type="submit"> -->
+                    <div class="articles__content">
+                        <img class="articles__img" src={{.Image}} alt="band">
+                        <div class="title">{{.Name}}</div>
+                    </div>
+                <!-- </button> -->
+                    
+
+                </a>
+            <!-- </form> -->
+            
         </li>
         {{end}}
     </ol>
@@ -60,8 +68,6 @@
     
     <div id="made-by">Made by Kaizen</div>
 
-    
-    <div id="sakura-container"></div>
 
     
     <script src="/static/mainpage.js"></script>

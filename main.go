@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	//groupie.InitWeb()
+	
 	server.CreateWebsite()
 
 }
