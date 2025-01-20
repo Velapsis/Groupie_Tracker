@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os/exec"
 	"runtime"
-	"text/template"
 	"strconv"
+	"text/template"
 )
 
 func CreateWebsite() {
@@ -78,8 +78,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "500: internal server error", http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, artists)
 	
+	t.Execute(w, artists)
+
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
@@ -88,8 +89,6 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("url : ", r.URL.Path)
 
 		fmt.Println("id : ", r.FormValue("id"))
-
-
 
 		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
@@ -105,6 +104,9 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 
 		id, _ := strconv.Atoi(r.FormValue("id"))
 
+		
+
+		
 		t.Execute(w, artist[id-1])
 
 		// urlString := string(r.URL.Path)[8:]
@@ -132,7 +134,6 @@ func LoadArtist(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-
 func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 
 	query := r.FormValue("query")
@@ -154,9 +155,10 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
 
 	if len(results) == 0 {
-		fmt.Println("No results found.") 
+		fmt.Println("No results found.")
 	}
 
-	return results
-    
+	fmt.Print(results)
+ 	return results
+
 }

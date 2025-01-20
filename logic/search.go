@@ -71,7 +71,8 @@ func SearchArtistsWithFilters(artists []Artist, query string, filters map[string
             })
 
             artiststruct = append(artiststruct, Artist{
-                Name: artist.Name,
+                Id: artist.Id,
+                Name: artist.Name,            
                 CreationDate: artist.CreationDate,
                 FirstAlbum: artist.FirstAlbum,
                 Image: artist.Image,
