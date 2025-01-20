@@ -46,3 +46,7 @@ a#back-link:hover {
     background-color: #ffb7c5;
     color: black;
 }
+
+html {
+    scroll-behavior: smooth;
+  }

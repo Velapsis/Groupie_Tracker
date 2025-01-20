@@ -96,3 +96,7 @@ h1 {
     z-index: 9999;
     font-family: Arial, sans-serif;
 }
+
+html {
+    scroll-behavior: smooth;
+  }
