@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
-    <title>Groupie Tracker</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/static/css/mainpage.css">
+        <title>Groupie Tracker</title>
+    </head>
 <body>
     <canvas id="sakuraCanvas"></canvas>
-    
-    <div id="main-page-button-container">          
+    <div id="page-directors">          
         <a href="/" id="main-page-button">Back Home</a>
     </div>
 
-    <div id="main-content">
-        <H1>Groupie Tracker</H1>
+
+
+<div id="main-content">
+    <H1>Groupie Tracker</H1>
+    
+</div>
+<div id="sakura-container"></div>
+
+<script src="/static/js/mainpage.js"></script>
+<div id="made-by">Made by Kaizen</div>
+
+    
+    <div id="search-container">
+        <form action="/index" method="POST">
+            <input type="text" value="search" name="search" hidden>
+            <input type="text" name="query" placeholder="Search for an artist, member, location, album, date">
+            <!-- <input type="text" name="creation_date" placeholder="Creation Date (YYYY)">
+            <input type="text" name="first_album_date" placeholder="First Album Date (YYYY-MM-DD)">
+            <input type="text" name="location" placeholder="Location"> -->
+            <button type="submit">Search</button> 
+            <a href="/index" id="reset">Reset</a>            
+        </form>
+        
     </div>
 
     <div id="search-container">
