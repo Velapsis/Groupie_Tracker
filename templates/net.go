@@ -19,7 +19,6 @@ func CreateWebsite() {
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist", ArtistHandler)
 	http.HandleFunc("/search", SearchAPIHandler)
-	//http.HandleFunc("/search", SearchHandler)
 
 	//OpenBrowser("http://localhost:8080")
 	fmt.Println("Server listening on port http://localhost:8000")
@@ -48,9 +47,12 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query().Get("query")
 	filters := map[string]string{
-		"creation_date":    "",
-		"first_album_date": "",
-		"location":         "",
+		"creationDateMin": r.URL.Query().Get("creationDateMin"),
+		"creationDateMax": r.URL.Query().Get("creationDateMax"),
+		"albumDateMin":    r.URL.Query().Get("albumDateMin"),
+		"albumDateMax":    r.URL.Query().Get("albumDateMax"),
+		"location":        r.URL.Query().Get("location"),
+		"members":         r.URL.Query().Get("members"),
 	}
 
 	artists, err := groupie.GetArtists()
@@ -61,7 +63,6 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
 
-	// S'assurer que l'encodage JSON est correct
 	err = json.NewEncoder(w).Encode(results)
 	if err != nil {
 		http.Error(w, "Failed to encode results", http.StatusInternalServerError)

@@ -133,3 +133,85 @@ function updateArtistsList(artists) {
 
         const debouncedSearch = debounce(performSearch, 300);
         searchInput.addEventListener('input', debouncedSearch);
+
+
+    
+       
+        const creationDateMin = document.getElementById('creationDateMin');
+        const creationDateMax = document.getElementById('creationDateMax');
+        const albumDateMin = document.getElementById('albumDateMin');
+        const albumDateMax = document.getElementById('albumDateMax');
+        const locationFilter = document.getElementById('locationFilter');
+        const memberCheckboxes = document.querySelectorAll('#memberFilter input[type="checkbox"]');
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function getActiveFilters() {
+            const filters = {
+                query: searchInput.value.toLowerCase().trim(),
+                creationDateMin: creationDateMin.value,
+                creationDateMax: creationDateMax.value,
+                albumDateMin: albumDateMin.value,
+                albumDateMax: albumDateMax.value,
+                location: locationFilter.value.trim(),
+                members: Array.from(memberCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value)
+            };
+            return filters;
+        }
+
+        async function performSearch() {
+            const filters = getActiveFilters();
+            
+            try {
+                const queryString = new URLSearchParams({
+                    query: filters.query,
+                    creationDateMin: filters.creationDateMin,
+                    creationDateMax: filters.creationDateMax,
+                    albumDateMin: filters.albumDateMin,
+                    albumDateMax: filters.albumDateMax,
+                    location: filters.location,
+                    members: filters.members.join(',')
+                }).toString();
+
+                const response = await fetch(`/search?${queryString}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const artists = await response.json();
+                updateArtistsList(artists);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Attachez l'événement à tous les filtres
+        
+        
+        searchInput.addEventListener('input', debouncedSearch);
+        creationDateMin.addEventListener('input', debouncedSearch);
+        creationDateMax.addEventListener('input', debouncedSearch);
+        albumDateMin.addEventListener('input', debouncedSearch);
+        albumDateMax.addEventListener('input', debouncedSearch);
+        locationFilter.addEventListener('input', debouncedSearch);
+        memberCheckboxes.forEach(cb => cb.addEventListener('change', debouncedSearch));
+          

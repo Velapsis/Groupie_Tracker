@@ -417,25 +417,5 @@ ul {
 }
 
 
-/* #ynov-campus {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  color: #ffb7c5;
-  text-shadow: 2px 2px 5px rgba(255, 183, 197, 0.5);
-  z-index: 10;
-  cursor: default;
-  user-select: none;
-  transition: all 0.3s ease;
-}
-
-
-#ynov-campus:hover {
-  transform: scale(1.1);
-} */
-
-
 
 
