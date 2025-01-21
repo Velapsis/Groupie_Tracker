@@ -40,3 +40,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 //NEEDS TO BE EDITED BY MAHAN !!!!!!
+
+
+
+
+
+        const searchInput = document.getElementById('searchInput');
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function performSearch() {
+    const query = searchInput.value.toLowerCase().trim(); // trim() pour enlever les espaces
+    
+    try {
+        // Si la recherche est vide, récupérer tous les artistes
+        if (query === '') {
+            const response = await fetch('/index', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const artists = await response.json();
+            updateArtistsList(artists);
+            return;
+        }
+
+        // Sinon, effectuer la recherche normale
+        const response = await fetch('/search?query=' + encodeURIComponent(query), {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const artists = await response.json();
+        updateArtistsList(artists);
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+function updateArtistsList(artists) {
+    console.log('Artists reçus:', artists); // Pour voir les données exactes
+    
+    const artistsList = document.getElementById('artistsList');
+    artistsList.innerHTML = '';
+    
+    artists.forEach(artist => {
+        console.log('Traitement artiste:', artist); // Pour voir chaque artiste
+        
+        const li = document.createElement('li');
+        li.className = 'articles__article';
+        
+        // Vérification des données avant affichage
+        const id = artist.Id || artist.id || 'ID manquant';
+        const name = artist.Name || artist.name || 'Nom manquant';
+        const image = artist.Image || artist.image || '/default-image.jpg';
+        
+        console.log('Données utilisées:', { id, name, image }); // Pour voir les données utilisées
+        
+        li.innerHTML = `
+            <a href="/artist?id=${id}" class="articles__link">
+                <div class="articles__content">
+                    <img class="articles__img" src="${image}" alt="${name}">
+                    <div class="title">${name}</div>
+                </div>
+            </a>
+        `;
+        artistsList.appendChild(li);
+    });
+}
+
+        const debouncedSearch = debounce(performSearch, 300);
+        searchInput.addEventListener('input', debouncedSearch);
