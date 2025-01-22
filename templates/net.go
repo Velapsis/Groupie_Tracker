@@ -5,6 +5,7 @@ import (
 	"fmt"
 	groupie "main/logic"
 	"net/http"
+	"net/url"
 	"os/exec"
 	"runtime"
 	"strconv"
@@ -19,7 +20,7 @@ func CreateWebsite() {
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist", ArtistHandler)
 	http.HandleFunc("/search", SearchAPIHandler)
-
+	http.HandleFunc("/geocode", GeocodeHandler)
 	//OpenBrowser("http://localhost:8000")
 	fmt.Println("Server listening on port http://localhost:8000")
 	http.ListenAndServe(":8000", nil)
@@ -157,4 +158,34 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "400: bad request.", http.StatusBadRequest)
 	}
 
+}
+
+
+func GeocodeHandler(w http.ResponseWriter, r *http.Request) {
+    location := r.URL.Query().Get("location")
+    
+
+    resp, err := http.Get(fmt.Sprintf(
+        "https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1",
+        url.QueryEscape(location),
+    ))
+    
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    defer resp.Body.Close()
+    
+    var result []struct {
+        Lat string `json:"lat"`
+        Lon string `json:"lon"`
+    }
+    
+    if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(result)
 }

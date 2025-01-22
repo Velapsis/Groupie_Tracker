@@ -1,16 +1,20 @@
 <html lang="eng">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Add these two lines for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Your existing stylesheet -->
     <link rel="stylesheet" type="text/css" href="/static/css/artist.css">
     <title>Groupie Tracker: {{.Name}}</title>
 </head>
 
 <body>
-     <div id="page-directors">          
+    <div id="page-directors">          
         <a href="/index" id="main-page-button">Back To Artists</a>
     </div>
 
@@ -38,6 +42,9 @@
 
         <div class="concerts">
             <h3>Concerts:</h3>
+            <!-- Add this div for the map -->
+            <div id="concertMap" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
+            
             {{range $key, $value := .Relations}}
             <table>
                 <tr class="location">
@@ -57,7 +64,7 @@
         </div>
     </div>
 
-  
     <div id="made-by">Made by Kaizen</div>
     <script src="/static/js/artist.js"></script>
 </body>
+</html>
