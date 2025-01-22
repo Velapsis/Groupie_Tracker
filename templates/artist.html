@@ -42,8 +42,7 @@
 
         <div class="concerts">
             <h3>Concerts:</h3>
-            <!-- Add this div for the map -->
-            <div id="concertMap" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
+            
             
             {{range $key, $value := .Relations}}
             <table>
@@ -63,6 +62,8 @@
             {{end}}
         </div>
     </div>
+    <!-- Add this div for the map -->
+    <div id="concertMap" style="height: 400px; width: 50%; margin-bottom: 20px;"></div>
 
     <div id="made-by">Made by Kaizen</div>
     <script src="/static/js/artist.js"></script>
