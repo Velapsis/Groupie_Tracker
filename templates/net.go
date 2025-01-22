@@ -135,6 +135,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("url : ", r.URL.Path)
 
 		fmt.Println("id : ", r.FormValue("id"))
+		
 
 		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
