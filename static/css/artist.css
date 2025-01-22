@@ -6,14 +6,11 @@
   --colour-text : #dcdcdc;
 }
 
-
 *, :after, :before {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
-
 
 body {
   background: var(--colour-bg);
@@ -22,7 +19,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 
 #made-by {
   position: fixed;
@@ -38,15 +34,14 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
 .wrapper {
   display: flex;
   gap: 2rem;
   margin: 2rem auto;
   max-width: 1200px;
   justify-content: center;
+  align-items: flex-start;
 }
-
 
 .wrapper > div {
   flex: 1;
@@ -58,8 +53,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: fit-content;
 }
 
+.profile {
+  flex: 0.8;
+}
 
 .title {
   display: flex;
@@ -74,8 +73,6 @@ body {
   letter-spacing: 0.1rem;
 }
 
-
-
 .profile_img {
   display: block;
   width: 25rem;
@@ -86,13 +83,12 @@ body {
   margin-bottom: 1rem;
 }
 
-
 .text {
-  width: 100%;
+  flex: 1;
   padding: 1rem;
   color: var(--colour-text);
+  height: auto;
 }
-
 
 .text h3 {
   color: var(--colour-pink);
@@ -101,9 +97,23 @@ body {
 }
 
 .concerts {
-  width: 100%;
-  color: var(--colour-text);
-  padding: 1rem;
+  flex: 1.2;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.concerts::-webkit-scrollbar {
+  width: 8px;
+}
+
+.concerts::-webkit-scrollbar-track {
+  background: var(--colour-panel);
+  border-radius: 4px;
+}
+
+.concerts::-webkit-scrollbar-thumb {
+  background: var(--colour-pink);
+  border-radius: 4px;
 }
 
 .concerts ul {
@@ -115,13 +125,11 @@ body {
   margin-bottom: 0.5rem;
 }
 
-
 table {
   font-family: var(--font);
-  color: var(--colour-text)
+  color: var(--colour-text);
+  width: 100%;
 }
-
-
 
 .test {
   display: flex;
@@ -130,11 +138,9 @@ table {
   margin-top: 1rem;
 }
 
-
 .back {
   width: 970px;
 }
-
 
 .btn {
   line-height: 50px;
@@ -150,30 +156,15 @@ table {
   margin: 0 auto;
 }
 
-
 .btn:hover {
   background: var(--colour-pink);
   color: #000;
   transform: scale(1.05);
 }
 
-
-@media only screen and (max-width: 800px) {
-  .wrapper {
-    flex-direction: column;
-    gap: 1rem;
-    margin: 1rem;
-  }
-  .title h2 {
-    font-size: 2rem;
-  }
-}
-
-
 html {
   scroll-behavior: smooth;
 }
-
 
 #page-directors {
   position: fixed;
@@ -226,7 +217,6 @@ html {
   display: none;
 }
 
-
 .arrow {
   display: inline-block;
   transition: transform 0.3s ease;
@@ -235,7 +225,6 @@ html {
 .concerts table {
   margin-bottom: 10px;
 }
-
 
 .date td {
   padding-left: 20px;
@@ -249,4 +238,43 @@ html {
 
 .date li {
   margin: 5px 0;
+}
+
+#concertMap {
+  height: 400px;
+  width: 100%;
+  border: 2px solid var(--colour-pink);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: var(--colour-panel);
+  color: var(--colour-text);
+}
+
+.leaflet-popup-tip {
+  background-color: var(--colour-panel);
+}
+
+@media only screen and (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem;
+  }
+  
+  .wrapper > div {
+    width: 100%;
+    max-height: none;
+  }
+  
+  .concerts {
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .title h2 {
+    font-size: 2rem;
+  }
 }
