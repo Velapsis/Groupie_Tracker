@@ -20,7 +20,7 @@ func CreateWebsite() {
 	http.HandleFunc("/artist", ArtistHandler)
 	http.HandleFunc("/search", SearchAPIHandler)
 
-	//OpenBrowser("http://localhost:8080")
+	OpenBrowser("http://localhost:8000")
 	fmt.Println("Server listening on port http://localhost:8000")
 	http.ListenAndServe(":8000", nil)
 }
