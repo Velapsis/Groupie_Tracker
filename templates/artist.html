@@ -41,9 +41,9 @@
             {{range $key, $value := .Relations}}
             <table>
                 <tr class="location">
-                    <td><a href="#{{$key}}"><u>&#9660 {{$key}}</u></a></td>
+                    <td><a><span class="arrow">&#9660;</span> {{$key}}</a></td>
                 </tr>
-                <tr class="date" id="{{$key}}">
+                <tr class="date">
                     <td>
                         {{range $value}}
                         <ul>
@@ -59,5 +59,5 @@
 
   
     <div id="made-by">Made by Kaizen</div>
-    
+    <script src="/static/js/artist.js"></script>
 </body>

@@ -10,7 +10,7 @@ body {
 }
 
 #page-directors {
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 10px;
 }
