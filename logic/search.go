@@ -57,14 +57,16 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 
 	// Filtres de dates de premier album
 	if min := filters["albumDateMin"]; min != "" {
-		albumYear, _ := strconv.Atoi(artist.FirstAlbum[:4])
+		albumDate := strings.Split(artist.FirstAlbum, ".")[2] // Prend l'année de la date
+		albumYear, _ := strconv.Atoi(albumDate)
 		minYear, _ := strconv.Atoi(min)
 		if albumYear < minYear {
 			return false
 		}
 	}
 	if max := filters["albumDateMax"]; max != "" {
-		albumYear, _ := strconv.Atoi(artist.FirstAlbum[:4])
+		albumDate := strings.Split(artist.FirstAlbum, ".")[2] // Prend l'année de la date
+		albumYear, _ := strconv.Atoi(albumDate)
 		maxYear, _ := strconv.Atoi(max)
 		if albumYear > maxYear {
 			return false
