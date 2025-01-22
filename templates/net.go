@@ -19,9 +19,8 @@ func CreateWebsite() {
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist", ArtistHandler)
 	http.HandleFunc("/search", SearchAPIHandler)
-	//http.HandleFunc("/search", SearchHandler)
 
-	//OpenBrowser("http://localhost:8080")
+	//OpenBrowser("http://localhost:8000")
 	fmt.Println("Server listening on port http://localhost:8000")
 	http.ListenAndServe(":8000", nil)
 }
@@ -48,9 +47,12 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query().Get("query")
 	filters := map[string]string{
-		"creation_date":    "",
-		"first_album_date": "",
-		"location":         "",
+		"creationDateMin": r.URL.Query().Get("creationDateMin"),
+		"creationDateMax": r.URL.Query().Get("creationDateMax"),
+		"albumDateMin":    r.URL.Query().Get("albumDateMin"),
+		"albumDateMax":    r.URL.Query().Get("albumDateMax"),
+		"location":        r.URL.Query().Get("location"),
+		"members":         r.URL.Query().Get("members"),
 	}
 
 	artists, err := groupie.GetArtists()
@@ -61,7 +63,6 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
 
-	// S'assurer que l'encodage JSON est correct
 	err = json.NewEncoder(w).Encode(results)
 	if err != nil {
 		http.Error(w, "Failed to encode results", http.StatusInternalServerError)
@@ -134,6 +135,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("url : ", r.URL.Path)
 
 		fmt.Println("id : ", r.FormValue("id"))
+		
 
 		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
@@ -156,39 +158,3 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
-
-// func LoadArtist(w http.ResponseWriter, r *http.Request) {
-// 	groupie.GetArtists()
-// 	IndexHandler(w, r)
-
-// 	http.Redirect(w, r, "/", http.StatusSeeOther)
-// }
-
-// func SearchHandler(w http.ResponseWriter, r *http.Request) []groupie.Artist {
-
-// 	query := r.FormValue("query")
-// 	filters := map[string]string{
-// 		"creation_date":    r.FormValue("creation_date"),
-// 		"first_album_date": r.FormValue("first_album_date"),
-// 		"location":         r.FormValue("location"),
-// 	}
-
-// 	fmt.Println("Search Query:", query)
-// 	fmt.Println("Filters:", filters)
-
-// 	artists, err := groupie.GetArtists()
-// 	if err != nil {
-// 		http.Error(w, "Failed to fetch artists", http.StatusInternalServerError)
-// 		return nil
-// 	}
-
-// 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
-
-// 	if len(results) == 0 {
-// 		fmt.Println("No results found.")
-// 	}
-
-// 	fmt.Print(results)
-// 	return results
-
-// }

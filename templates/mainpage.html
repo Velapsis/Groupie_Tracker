@@ -6,6 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="/static/css/mainpage.css">
         <title>Groupie Tracker</title>
+        <style>
+                      
+            
+        </style>
     </head>
 <body>
     <canvas id="sakuraCanvas"></canvas>
@@ -15,9 +19,6 @@
     <div id="ynov-campus">
     <a href="https://www.ynov.com/campus/montpellier" target="_blank" id="main-page-button" >YNOV Campus</a>
 </div>
-  
-
-
 
 <div id="main-content">
     <H1>Groupie Tracker</H1>
@@ -25,16 +26,63 @@
 </div>
 <div id="sakura-container"></div>
 
-<script src="/static/js/mainpage.js"></script>
+
 <div id="made-by">Made by Kaizen</div>
 
+
     <div id="search-container">
+        
         <input 
             type="text" 
             id="searchInput" 
             placeholder="Search for an artist, member, location, album, date"
             autocomplete="off"
         >
+    </div>
+    <div class="filter-container">
+        <div class="filter-section">
+            <h3>Members</h3>
+            <div class="checkbox-container" id="memberFilter">
+                <label class="checkbox-label">
+                    <input type="checkbox" value="1"> 1 Member
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="2"> 2 Members
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="3"> 3 Members
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="4"> 4 Members
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="5+"> 5+ Members
+                </label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Creation Date</h3>
+            <div class="range-container">
+                <input type="number" id="creationDateMin" placeholder="From year" min="1950" max="2024">
+                <span>to</span>
+                <input type="number" id="creationDateMax" placeholder="To year" min="1950" max="2024">
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>First Album</h3>
+            <div class="range-container">
+                <input type="number" id="albumDateMin" placeholder="From year" min="1950" max="2024">
+                <span>to</span>
+                <input type="number" id="albumDateMax" placeholder="To year" min="1950" max="2024">
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Concert Location</h3>
+            <input type="text" id="locationFilter" placeholder="Enter location">
+        </div>
     </div>
 
     <ol class="articles" id="artistsList">
@@ -43,106 +91,16 @@
             <a href="/artist?id={{.Id}}" class="articles__link">
                 <div class="articles__content">
                     <img class="articles__img" src="{{.Image}}" alt="band">
-                    <div class="title">{{.Name}}</div>
+                    <div class="title">{{.Name}} </div>
                 </div>
             </a>
         </li>
         {{end}}
     </ol>
 
-    <div id="made-by">Made by Kaizen</div>
-    <button id="back-to-top" onclick="scrollToTop()">↑</button>
+   
     
 
-    <script>
-        const searchInput = document.getElementById('searchInput');
-        
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        async function performSearch() {
-    const query = searchInput.value.toLowerCase().trim(); // trim() pour enlever les espaces
-    
-    try {
-        // Si la recherche est vide, récupérer tous les artistes
-        if (query === '') {
-            const response = await fetch('/index', {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const artists = await response.json();
-            updateArtistsList(artists);
-            return;
-        }
-
-        // Sinon, effectuer la recherche normale
-        const response = await fetch('/search?query=' + encodeURIComponent(query), {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const artists = await response.json();
-        updateArtistsList(artists);
-        
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-function updateArtistsList(artists) {
-    console.log('Artists reçus:', artists); // Pour voir les données exactes
-    
-    const artistsList = document.getElementById('artistsList');
-    artistsList.innerHTML = '';
-    
-    artists.forEach(artist => {
-        console.log('Traitement artiste:', artist); // Pour voir chaque artiste
-        
-        const li = document.createElement('li');
-        li.className = 'articles__article';
-        
-        // Vérification des données avant affichage
-        const id = artist.Id || artist.id || 'ID manquant';
-        const name = artist.Name || artist.name || 'Nom manquant';
-        const image = artist.Image || artist.image || '/default-image.jpg';
-        
-        console.log('Données utilisées:', { id, name, image }); // Pour voir les données utilisées
-        
-        li.innerHTML = `
-            <a href="/artist?id=${id}" class="articles__link">
-                <div class="articles__content">
-                    <img class="articles__img" src="${image}" alt="${name}">
-                    <div class="title">${name}</div>
-                </div>
-            </a>
-        `;
-        artistsList.appendChild(li);
-    });
-}
-
-        const debouncedSearch = debounce(performSearch, 300);
-        searchInput.addEventListener('input', debouncedSearch);
-    </script>
+    <script src='/static/js/mainpage.js'></script>
 </body>
 </html>

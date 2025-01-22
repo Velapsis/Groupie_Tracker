@@ -7,75 +7,104 @@ import (
 
 func SearchArtistsWithFilters(artists []Artist, query string, filters map[string]string) []Artist {
 	query = strings.ToLower(query)
-	var results []map[string]string
-
-	var artiststruct []Artist = []Artist{}
+	var results []Artist
 
 	for _, artist := range artists {
-		match := false
+		if !matchesFilters(artist, query, filters) {
+			continue
+		}
+		results = append(results, artist)
+	}
 
-		if query != "" {
-			if strings.Contains(strings.ToLower(artist.Name), query) {
-				match = true
-			}
-			for _, member := range artist.Members {
-				if strings.Contains(strings.ToLower(member), query) {
-					match = true
-				}
-			}
-			for location := range artist.Relations {
-				if strings.Contains(strings.ToLower(location), query) {
-					match = true
-				}
-			}
-			if strings.Contains(strings.ToLower(artist.FirstAlbum), query) {
-				match = true
-			}
-			if strings.Contains(strconv.Itoa(artist.CreationDate), query) {
-				match = true
+	return results
+}
+
+func matchesFilters(artist Artist, query string, filters map[string]string) bool {
+	// Vérification de la recherche textuelle
+	if query != "" {
+		found := false
+		if strings.Contains(strings.ToLower(artist.Name), query) {
+			found = true
+		}
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), query) {
+				found = true
 			}
 		}
-
-		if creationDate, ok := filters["creation_date"]; ok && creationDate != "" {
-			if strconv.Itoa(artist.CreationDate) != creationDate {
-				continue
+		for location := range artist.Relations {
+			if strings.Contains(strings.ToLower(location), query) {
+				found = true
 			}
 		}
-		if firstAlbumDate, ok := filters["first_album_date"]; ok && firstAlbumDate != "" {
-			if !strings.Contains(artist.FirstAlbum, firstAlbumDate) {
-				continue
-			}
-		}
-		if location, ok := filters["location"]; ok && location != "" {
-			found := false
-			for loc := range artist.Relations {
-				if strings.Contains(strings.ToLower(loc), strings.ToLower(location)) {
-					found = true
-					break
-				}
-			}
-			if !found {
-				continue
-			}
-		}
-
-		if match {
-			results = append(results, map[string]string{
-				"type":          "Artist",
-				"name":          artist.Name,
-				"creation_date": strconv.Itoa(artist.CreationDate),
-				"first_album":   artist.FirstAlbum,
-			})
-
-			artiststruct = append(artiststruct, Artist{
-				Id:           artist.Id,
-				Name:         artist.Name,
-				CreationDate: artist.CreationDate,
-				FirstAlbum:   artist.FirstAlbum,
-				Image:        artist.Image,
-			})
-
+		if !found {
+			return false
 		}
 	}
-	return artiststruct
+
+	// Filtres de dates de création
+	if min := filters["creationDateMin"]; min != "" {
+		minYear, _ := strconv.Atoi(min)
+		if artist.CreationDate < minYear {
+			return false
+		}
+	}
+	if max := filters["creationDateMax"]; max != "" {
+		maxYear, _ := strconv.Atoi(max)
+		if artist.CreationDate > maxYear {
+			return false
+		}
+	}
+
+	// Filtres de dates de premier album
+	if min := filters["albumDateMin"]; min != "" {
+		albumYear, _ := strconv.Atoi(artist.FirstAlbum[:4])
+		minYear, _ := strconv.Atoi(min)
+		if albumYear < minYear {
+			return false
+		}
+	}
+	if max := filters["albumDateMax"]; max != "" {
+		albumYear, _ := strconv.Atoi(artist.FirstAlbum[:4])
+		maxYear, _ := strconv.Atoi(max)
+		if albumYear > maxYear {
+			return false
+		}
+	}
+
+	// Filtre de localisation
+	if location := filters["location"]; location != "" {
+		found := false
+		for loc := range artist.Relations {
+			if strings.Contains(strings.ToLower(loc), strings.ToLower(location)) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+
+	// Filtre de nombre de membres
+	if members := filters["members"]; members != "" {
+		memberCounts := strings.Split(members, ",")
+		found := false
+		numMembers := len(artist.Members)
+		for _, count := range memberCounts {
+			if count == "5+" && numMembers >= 5 {
+				found = true
+				break
+			}
+			countNum, _ := strconv.Atoi(count)
+			if countNum == numMembers {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+
+	return true
 }
