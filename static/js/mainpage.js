@@ -35,8 +35,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     animate();
-});
+
     
+    const button = document.getElementById('back-to-top');
 
+    if (button) {
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 300) {  
+                button.classList.add('show');
+            } else {
+                button.classList.remove('show');
+            }
+        });
 
-//NEEDS TO BE EDITED BY MAHAN !!!!!!
+        
+        button.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    } else {
+        console.error("Element with ID 'back-to-top' not found.");
+    }
+});

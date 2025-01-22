@@ -45,7 +45,7 @@ body {
 }
 
 #ynov-campus {
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 10px;
 }
@@ -436,6 +436,39 @@ ul {
   transform: scale(1.1);
 } */
 
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 50px;
+  height: 50px;
+  background-color: #ffb7c5;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 183, 197, 0.5);
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateY(100px) scale(0.9);
+  filter: blur(5px);
+  z-index: 99999;
+}
+
+
+#back-to-top:hover {
+  background-color: #fff;
+  color: #ffb7c5;
+  transform: scale(1.1);
+  filter: blur(2px);
+}
 
 
 
+#back-to-top.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
