@@ -12,10 +12,13 @@ import (
 	"text/template"
 )
 
+// CreateWebsite initialise les routes et démarre le serveur web
 func CreateWebsite() {
+	// Configuration des dossiers statiques
 	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("./templates/"))))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
+	// Configuration des routes
 	http.HandleFunc("/", MainMenu)
 	http.HandleFunc("/index", IndexHandler)
 	http.HandleFunc("/artist", ArtistHandler)
@@ -26,6 +29,8 @@ func CreateWebsite() {
 	fmt.Println("Server listening on port http://localhost:8000")
 	http.ListenAndServe(":8000", nil)
 }
+
+// OpenBrowser lance le navigateur par défaut selon le système d'exploitation
 func OpenBrowser(url string) error {
 	var cmd string
 	var args []string
@@ -36,17 +41,19 @@ func OpenBrowser(url string) error {
 		args = []string{"/c", "start"}
 	case "darwin":
 		cmd = "open"
-	default: // "linux", "freebsd", "openbsd", "netbsd"
+	default:
 		cmd = "xdg-open"
 	}
 	args = append(args, url)
 	return exec.Command(cmd, args...).Start()
-
 }
+
+// SearchAPIHandler gère les requêtes de recherche avec filtres
 func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
+	// Récupération des paramètres de recherche et filtres
 	query := r.URL.Query().Get("query")
 	filters := map[string]string{
 		"creationDateMin": r.URL.Query().Get("creationDateMin"),
@@ -64,7 +71,6 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	results := groupie.SearchArtistsWithFilters(artists, query, filters)
-
 	err = json.NewEncoder(w).Encode(results)
 	if err != nil {
 		http.Error(w, "Failed to encode results", http.StatusInternalServerError)
@@ -72,8 +78,8 @@ func SearchAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// MainMenu gère l'affichage de la page d'accueil
 func MainMenu(w http.ResponseWriter, r *http.Request) {
-
 	if r.URL.Path != "/" {
 		t, _ := template.ParseFiles("templates/error.html")
 		t.Execute(w, http.StatusNotFound)
@@ -87,8 +93,9 @@ func MainMenu(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Execute(w, r)
 }
-func AboutPage(w http.ResponseWriter, r *http.Request) {
 
+// AboutPage gère l'affichage de la page "À propos"
+func AboutPage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/about/" {
 		t, _ := template.ParseFiles("templates/error.html")
 		t.Execute(w, http.StatusNotFound)
@@ -102,6 +109,8 @@ func AboutPage(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Execute(w, r)
 }
+
+// IndexHandler gère l'affichage de la liste des artistes
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/index" {
 		t, _ := template.ParseFiles("templates/error.html")
@@ -115,14 +124,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Si c'est une requête AJAX
+	// Gestion des requêtes AJAX
 	if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(artists)
 		return
 	}
 
-	// Pour l'affichage normal de la page
+	// Affichage normal de la page
 	t, err := template.ParseFiles("templates/mainpage.html")
 	if err != nil {
 		http.Error(w, "500: internal server error", http.StatusInternalServerError)
@@ -131,13 +140,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, artists)
 }
 
+// ArtistHandler gère l'affichage des détails d'un artiste spécifique
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-
-		fmt.Println("url : ", r.URL.Path)
-
-		fmt.Println("id : ", r.FormValue("id"))
-
 		t, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
 			http.Error(w, "500: internal server error", http.StatusInternalServerError)
@@ -151,18 +156,17 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		id, _ := strconv.Atoi(r.FormValue("id"))
-
 		t.Execute(w, artist[id-1])
-
 	} else {
 		http.Error(w, "400: bad request.", http.StatusBadRequest)
 	}
-
 }
 
+// GeocodeHandler gère la conversion des noms de lieux en coordonnées géographiques
 func GeocodeHandler(w http.ResponseWriter, r *http.Request) {
 	location := r.URL.Query().Get("location")
 
+	// Appel à l'API OpenStreetMap pour obtenir les coordonnées
 	resp, err := http.Get(fmt.Sprintf(
 		"https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1",
 		url.QueryEscape(location),

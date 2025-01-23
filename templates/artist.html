@@ -1,32 +1,38 @@
 <html lang="eng">
 <head>
+    <!-- Configuration de base -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Add these two lines for the map -->
+    <!-- Ressources Leaflet pour la carte interactive -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-    <!-- Your existing stylesheet -->
+    <!-- Style personnalisé -->
     <link rel="stylesheet" type="text/css" href="/static/css/artist.css">
     <title>Groupie Tracker: {{.Name}}</title>
 </head>
 
 <body>
+    <!-- Bouton de retour -->
     <div id="page-directors">          
         <a href="/index" id="main-page-button">Back To Artists</a>
     </div>
 
+    <!-- Nom de l'artiste -->
     <div class="title">
         <h2>{{.Name}}</h2>
     </div>
 
+    <!-- Container principal des informations -->
     <div class="wrapper">
+        <!-- Image de l'artiste -->
         <div class="profile">
             <img class="profile__img" src={{.Image}} alt="band">
         </div>
 
+        <!-- Informations de base -->
         <div class="text">
             <h3>Founded:</h3>
             <p>{{.CreationDate}}</p>
@@ -40,15 +46,16 @@
             </ul>
         </div>
 
+        <!-- Liste des concerts -->
         <div class="concerts">
             <h3>Concerts:</h3>
-            
-            
             {{range $key, $value := .Relations}}
             <table>
+                <!-- Lieu du concert -->
                 <tr class="location">
                     <td><a><span class="arrow">&#9660;</span> {{$key}}</a></td>
                 </tr>
+                <!-- Dates du concert -->
                 <tr class="date">
                     <td>
                         {{range $value}}
@@ -62,10 +69,14 @@
             {{end}}
         </div>
     </div>
-    <!-- Add this div for the map -->
+
+    <!-- Carte des concerts -->
     <div id="concertMap" style="height: 400px; width: 50%; margin-bottom: 20px;"></div>
 
+    <!-- Signature -->
     <div id="made-by">Made by Kaizen</div>
+    
+    <!-- Script de gestion des fonctionnalités de la page -->
     <script src="/static/js/artist.js"></script>
 </body>
 </html>

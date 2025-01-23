@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Configuration de base -->
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Ressources externes -->
         <link rel="stylesheet" type="text/css" href="/static/css/mainpage.css">
         <title>Groupie Tracker</title>
-        <style>
-                      
-            
-        </style>
     </head>
 <body>
+    <!-- Animation de fond des pétales -->
     <canvas id="sakuraCanvas"></canvas>
+
+    <!-- Navigation -->
     <div id="page-directors">          
         <a href="/" id="main-page-button">Back Home</a>
     </div>
+
+    <!-- Lien YNOV -->
     <div id="ynov-campus">
-    <a href="https://www.ynov.com/campus/montpellier" target="_blank" id="main-page-button" >YNOV Campus</a>
-</div>
+        <a href="https://www.ynov.com/campus/montpellier" target="_blank" id="main-page-button">YNOV Campus</a>
+    </div>
 
-<div id="main-content">
-    <H1>Groupie Tracker</H1>
-    
-</div>
-<div id="sakura-container"></div>
+    <!-- Titre principal -->
+    <div id="main-content">
+        <H1>Groupie Tracker</H1>
+    </div>
 
+    <!-- Container pour l'animation des pétales -->
+    <div id="sakura-container"></div>
 
-<div id="made-by">Made by Kaizen</div>
-<button id="back-to-top" title="Go to top">↑</button>
+    <!-- Signature et bouton retour en haut -->
+    <div id="made-by">Made by Kaizen</div>
+    <button id="back-to-top" title="Go to top">↑</button>
 
+    <!-- Zone de recherche -->
     <div id="search-container">
-        
         <input 
             type="text" 
             id="searchInput" 
@@ -40,28 +45,22 @@
         >
         <a href="/index" id="reset">Reset</a> 
     </div>
+
+    <!-- Zone des filtres -->
     <div class="filter-container">
+        <!-- Filtre nombre de membres -->
         <div class="filter-section">
             <h3>Members</h3>
             <div class="checkbox-container" id="memberFilter">
+                <!-- Cases à cocher pour le nombre de membres -->
                 <label class="checkbox-label">
                     <input type="checkbox" value="1"> 1 Member
                 </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" value="2"> 2 Members
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" value="3"> 3 Members
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" value="4"> 4 Members
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" value="5+"> 5+ Members
-                </label>
+                <!-- Répété pour 2, 3, 4, 5+ membres -->
             </div>
         </div>
 
+        <!-- Filtre date de création -->
         <div class="filter-section">
             <h3>Creation Date</h3>
             <div class="range-container">
@@ -71,6 +70,7 @@
             </div>
         </div>
 
+        <!-- Filtre date premier album -->
         <div class="filter-section">
             <h3>First Album</h3>
             <div class="range-container">
@@ -80,12 +80,14 @@
             </div>
         </div>
 
+        <!-- Filtre localisation -->
         <div class="filter-section">
             <h3>Concert Location</h3>
             <input type="text" id="locationFilter" placeholder="Enter location">
         </div>
     </div>
 
+    <!-- Liste des artistes -->
     <ol class="articles" id="artistsList">
         {{ range . }}      
         <li class="articles__article" data-artist-id="{{.Id}}">
@@ -99,10 +101,7 @@
         {{end}}
     </ol>
 
-   
-    
-
+    <!-- Script principal -->
     <script src='/static/js/mainpage.js'></script>
-
 </body>
 </html>

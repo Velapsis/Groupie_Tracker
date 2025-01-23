@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+// SearchArtistsWithFilters filtre la liste des artistes selon les critères spécifiés
+// Prend en entrée la liste complète des artistes, une requête de recherche et une map de filtres
 func SearchArtistsWithFilters(artists []Artist, query string, filters map[string]string) []Artist {
 	query = strings.ToLower(query)
 	var results []Artist
@@ -19,8 +21,9 @@ func SearchArtistsWithFilters(artists []Artist, query string, filters map[string
 	return results
 }
 
+// matchesFilters vérifie si un artiste correspond aux critères de recherche et aux filtres
 func matchesFilters(artist Artist, query string, filters map[string]string) bool {
-	// Vérification de la recherche textuelle
+	// Recherche textuelle dans le nom, les membres et les lieux de concert
 	if query != "" {
 		found := false
 		if strings.Contains(strings.ToLower(artist.Name), query) {
@@ -41,7 +44,7 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 		}
 	}
 
-	// Filtres de dates de création
+	// Filtre sur la plage de dates de création
 	if min := filters["creationDateMin"]; min != "" {
 		minYear, _ := strconv.Atoi(min)
 		if artist.CreationDate < minYear {
@@ -55,9 +58,9 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 		}
 	}
 
-	// Filtres de dates de premier album
+	// Filtre sur la plage de dates du premier album
 	if min := filters["albumDateMin"]; min != "" {
-		albumDate := strings.Split(artist.FirstAlbum, ".")[2] // Prend l'année de la date
+		albumDate := strings.Split(artist.FirstAlbum, ".")[2]
 		albumYear, _ := strconv.Atoi(albumDate)
 		minYear, _ := strconv.Atoi(min)
 		if albumYear < minYear {
@@ -65,7 +68,7 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 		}
 	}
 	if max := filters["albumDateMax"]; max != "" {
-		albumDate := strings.Split(artist.FirstAlbum, ".")[2] // Prend l'année de la date
+		albumDate := strings.Split(artist.FirstAlbum, ".")[2]
 		albumYear, _ := strconv.Atoi(albumDate)
 		maxYear, _ := strconv.Atoi(max)
 		if albumYear > maxYear {
@@ -73,7 +76,7 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 		}
 	}
 
-	// Filtre de localisation
+	// Filtre sur les lieux de concert
 	if location := filters["location"]; location != "" {
 		found := false
 		for loc := range artist.Relations {
@@ -87,7 +90,7 @@ func matchesFilters(artist Artist, query string, filters map[string]string) bool
 		}
 	}
 
-	// Filtre de nombre de membres
+	// Filtre sur le nombre de membres
 	if members := filters["members"]; members != "" {
 		memberCounts := strings.Split(members, ",")
 		found := false

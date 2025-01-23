@@ -1,3 +1,4 @@
+// Package groupie gère l'interaction avec l'API Groupie Tracker
 package groupie
 
 import (
@@ -8,28 +9,34 @@ import (
 	"strings"
 )
 
+// GetArtists récupère tous les artistes de l'API avec leurs informations complètes
 func GetArtists() ([]Artist, error) {
-
 	var artists []Artist
+	
+	// Récupère les données de base des artistes
 	body, err := createBody("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
 		fmt.Println("GetArtist error")
 		return []Artist{}, err
 	}
 
+	// Désérialise les données JSON dans la structure temporaire
 	err = json.Unmarshal(body, &temp)
 	if err != nil {
 		fmt.Println("GetArtist error")
 		return []Artist{}, err
 	}
 
+	// Récupère les données de relations (concerts) pour tous les artistes
 	relations, err := getRelations()
 	if err != nil {
 		fmt.Println("GetArtist error")
 		return []Artist{}, err
 	}
 
+	// Combine les données des artistes avec leurs relations
 	for v := range temp {
+		// Reformate les dates dans les relations pour utiliser des points au lieu des tirets
 		for key, dates := range relations[v].Relations {
 			var modified []string
 			for _, date := range dates {
@@ -38,6 +45,7 @@ func GetArtists() ([]Artist, error) {
 			relations[v].Relations[key] = modified
 		}
 
+		// Crée un nouvel artiste avec toutes les informations combinées
 		value := Artist{
 			temp[v].Id,
 			temp[v].Image,
@@ -53,9 +61,10 @@ func GetArtists() ([]Artist, error) {
 
 	return artists, err
 }
+
+// getRelations récupère les informations de concerts pour tous les artistes
 func getRelations() ([]Relation, error) {
 	body, err := createBody("https://groupietrackers.herokuapp.com/api/relation")
-
 	if err != nil {
 		fmt.Println("getRelations error")
 		return []Relation{}, err
@@ -71,6 +80,7 @@ func getRelations() ([]Relation, error) {
 		return []Relation{}, err
 	}
 
+	// Reformate les données des relations pour une meilleure lisibilité
 	for i := range temp.Relations {
 		relations := make(map[string][]string, 1)
 
@@ -78,9 +88,11 @@ func getRelations() ([]Relation, error) {
 			var modDates []string
 			var modKey string
 
+			// Remplace les tirets et underscores par des espaces et virgules
 			modKey = strings.ReplaceAll(key, "-", ", ")
 			modKey = strings.ReplaceAll(modKey, "_", " ")
 
+			// Reformate les dates
 			for _, date := range dates {
 				modDates = append(modDates, strings.ReplaceAll(date, "-", "."))
 			}
@@ -93,6 +105,7 @@ func getRelations() ([]Relation, error) {
 	return temp.Relations, err
 }
 
+// createBody effectue une requête HTTP GET et retourne le corps de la réponse
 func createBody(link string) ([]byte, error) {
 	var body []byte
 	response, err := http.Get(link)
