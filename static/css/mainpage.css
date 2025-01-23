@@ -483,7 +483,7 @@ input[type="text"] {
   color: #000;
   border: none;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   box-shadow: 0 0 10px rgba(255, 183, 197, 0.5);
   cursor: pointer;

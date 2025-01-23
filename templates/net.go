@@ -22,9 +22,9 @@ func CreateWebsite() {
 	http.HandleFunc("/search", SearchAPIHandler)
 	http.HandleFunc("/geocode", GeocodeHandler)
 
-	OpenBrowser("http://localhost:8000")
+	OpenBrowser("http://localhost:8080")
 	fmt.Println("Server listening on port http://localhost:8000")
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":8080", nil)
 }
 func OpenBrowser(url string) error {
 	var cmd string
