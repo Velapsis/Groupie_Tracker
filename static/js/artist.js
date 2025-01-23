@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function() {
-    // Initialize map
+    
     const map = L.map('concertMap').setView([0, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -8,14 +8,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     const markers = [];
     const locationLinks = document.querySelectorAll('.location a');
     
-    // Hide all dates initially and set explicit display style
+   
     document.querySelectorAll('.date').forEach(date => {
         date.style.display = 'none';
     });
 
-    // Geocode all locations and add markers
+    
     for (const link of locationLinks) {
-        const location = link.textContent.trim().slice(2); // Remove arrow character
+        const location = link.textContent.trim().slice(2); 
         try {
             const response = await fetch(`/geocode?location=${encodeURIComponent(location)}`);
             const data = await response.json();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // Add click handlers for showing/hiding dates
+    
     locationLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
